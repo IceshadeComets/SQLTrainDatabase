@@ -53,27 +53,59 @@ if ($mysqli->connect_errno) {
     else{
         //echo "<h2>No results found.</h2>";
     }
-    mysqli_close($mysqli);
 }
          ?>
 
-	<h1> Add Info</h1>
-	<div><h2>Registration Form</h2></div>
-	<form action='home.php' method="POST">
-		<label for="user">Name:</label><br>
-		<input type='text' name= 'name' id="name" required/> <br> <br>
+<h1> Search For Employee Information</h1> 
+    <form action='home.php' method="POST">
+        <label for="user">Employee Name</label><br>
+        <input type='text' name= 'name' id="name" required/> <br> <br>
+        <input type='submit' name= 'empsearch' id="empsearch" required/> <br> <br>
+    </form>
 
-		<label for="email">Email:</label><br>
-		<input type='text' name= 'email' id="email" required/> <br> <br>
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["empsearch"])) {
+    // Note for this crap, we will need to later sort this out by user type, etc User is Supervisor/CEo
+    // Retrieve the input data to display
+    $name = $_POST["name"];
+    $result = mysqli_query($mysqli,"SELECT * FROM employee as E WHERE E.firstname = '$name'");
+    if($result->num_rows >= 1){
+        echo "<h2>Search Results:</h2>";
+        echo "<table border='1'>
+        <tr>
+        <th>SSN</th>
+        <th>CEOSSN</th>
+        <th>Address</th>
+        <th>FirstName</th>
+        <th>MiddleName</th>
+        <th>LastName</th>
+        <th>Birthdate</th>
+        <th>Salary</th>
+        <th>Sex</th>
+        </tr>";
+        while($row = mysqli_fetch_array($result))
+        {
+            echo "<tr>";
+            echo "<td>" . $row['SSN'] . "</td>";
+            echo "<td>" . $row['CEOSSN'] . "</td>";
+            echo "<td>" . $row['Address'] . "</td>";
+            echo "<td>" . $row['FirstName'] . "</td>";
+            echo "<td>" . $row['MiddleName'] . "</td>";
+            echo "<td>" . $row['LastName'] . "</td>";
+            echo "<td>" . $row['Birthdate'] . "</td>";
+            echo "<td>" . $row['Salary'] . "</td>";
+            echo "<td>" . $row['Sex'] . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    }
+    else{
+        //echo "<h2>No results found.</h2>";
+    }
+}
+         ?>
 
-		<label for="phone">Phone:</label><br>
-		<input type='text' name= 'phone' id="phone" required/> <br> <br>
 
-		<label for="ngroup">Group:</label><br>
-		<input type='text' name= 'ngroup' id="ngroup" required/> <br> <br>
 
-		<input type='submit' name= 'create' value='Create Account' required/> <br> <br>
-	</form>
 
 </body>
 </html>
