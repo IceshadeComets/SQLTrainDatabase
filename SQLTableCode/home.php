@@ -1,3 +1,39 @@
+<style type = "text/css">
+    body {
+        /* background-color: #37FF8B; */
+        background-image: url(bg4.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin: 100px;
+        color: #457B9D; 
+
+    }
+    h1 {
+        text-align: center;
+        font-family: serif;
+        margin: 50px;
+    }
+    form {
+        text-align: center;
+        font-family: tahoma;
+    }
+    div {
+        text-align: center;
+        font-family: tahoma;
+    }
+    input[type=text] {
+        border: none;
+    }
+    input[type=button], input[type=submit] {
+        border: none;
+        border-radius: 2px;
+        font-size: 18px;
+        padding: 10px;
+    } 
+    input[type=submit]:hover {
+        color: #E63946;
+    }
+</style>
 <?php
 //Variables to connect to the database
 $host = "localhost";
@@ -58,7 +94,7 @@ if ($mysqli->connect_errno) {
 
 <h1> Search For Employee Information</h1> 
     <form action='home.php' method="POST">
-        <label for="user">Employee Name</label><br>
+        <label for="user">Employee Name/SSN</label><br>
         <input type='text' name= 'name' id="name" required/> <br> <br>
         <input type='submit' name= 'empsearch' id="empsearch" required/> <br> <br>
     </form>
@@ -68,6 +104,7 @@ if ($mysqli->connect_errno) {
     // Retrieve the input data to display
     $name = $_POST["name"];
     $result = mysqli_query($mysqli,"SELECT * FROM employee as E WHERE E.firstname = '$name'");
+    $sresult = mysqli_query($mysqli,"SELECT * FROM employee as E WHERE E.ssn = '$name'");
     if($result->num_rows >= 1){
         echo "<h2>Search Results:</h2>";
         echo "<table border='1'>
@@ -97,14 +134,79 @@ if ($mysqli->connect_errno) {
             echo "</tr>";
         }
         echo "</table>";
-    }
+    } else if($sresult->num_rows >= 1){
+        echo "<h2>Search Results:</h2>";
+        echo "<table border='1'>
+        <tr>
+        <th>SSN</th>
+        <th>CEOSSN</th>
+        <th>Address</th>
+        <th>FirstName</th>
+        <th>MiddleName</th>
+        <th>LastName</th>
+        <th>Birthdate</th>
+        <th>Salary</th>
+        <th>Sex</th>
+        </tr>";
+        while($row = mysqli_fetch_array($sresult))
+        {
+            echo "<tr>";
+            echo "<td>" . $row['SSN'] . "</td>";
+            echo "<td>" . $row['CEOSSN'] . "</td>";
+            echo "<td>" . $row['Address'] . "</td>";
+            echo "<td>" . $row['FirstName'] . "</td>";
+            echo "<td>" . $row['MiddleName'] . "</td>";
+            echo "<td>" . $row['LastName'] . "</td>";
+            echo "<td>" . $row['Birthdate'] . "</td>";
+            echo "<td>" . $row['Salary'] . "</td>";
+            echo "<td>" . $row['Sex'] . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    } 
     else{
         //echo "<h2>No results found.</h2>";
     }
 }
          ?>
 
+<h1> Search For Train Specification</h1> 
+    <form action='home.php' method="POST">
+        <label for="user">TrainID</label><br>
+        <input type='text' name= 'name' id="name" required/> <br> <br>
+        <input type='submit' name= 'tsearch' id="tsearch" required/> <br> <br>
+    </form>
 
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tsearch"])) {
+    // Note for this crap, we will need to later sort this out by user type, etc User is Supervisor/CEo
+    // Retrieve the input data to display
+    $name = $_POST["name"];
+    $result = mysqli_query($mysqli,"SELECT * FROM train as T WHERE T.trainid = '$name'");
+    if($result->num_rows >= 1){
+        echo "<h2>Search Results:</h2>";
+        echo "<table border='1'>
+        <tr>
+        <th>TrainID</th>
+        <th>InspectorSSN</th>
+        <th>BranchID</th>
+        <th>LocomotiveType</th>
+        </tr>";
+        while($row = mysqli_fetch_array($result))
+        {
+            echo "<tr>";
+            echo "<td>" . $row['TrainID'] . "</td>";
+            echo "<td>" . $row['InspectorSSN'] . "</td>";
+            echo "<td>" . $row['BranchID'] . "</td>";
+            echo "<td>" . $row['LocomotiveType'] . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    } 
+    else{
+        //echo "<h2>No results found.</h2>";
+    }
+}
+         ?>
 
 
 </body>
