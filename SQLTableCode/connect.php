@@ -46,10 +46,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
     $name = $_POST["name"];
     $email = $_POST["email"];
     $password = $_POST["password"];
+    $adminc = $_POST["acode"];
+    // Codes for End User Types
+    // 69 CEO
+    // 420 Train Engineer
+    // 500 Safety Inspector
+    // 555 Supervisor
+    // Else Employee
 
+    if($adminc == 69){
     // Insert the input data into the database table
-    $stmt = $mysqli->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $email, $password);
+    $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
+    $user_type = "CEO"; // Define the user type variable
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
     $stmt->execute();
 
     // Check for insertion errors
@@ -62,6 +71,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
     // Close the database connection
     $stmt->close();
     $mysqli->close();
+    } else if($adminc == 420){
+    // Insert the input data into the database table
+    $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
+    $user_type = "TrainEngineer"; // Define the user type variable
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $stmt->execute();
+
+    // Check for insertion errors
+    if ($stmt->errno) {
+        echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
+    } else {
+        echo "Account created successfully!";
+    }
+
+    // Close the database connection
+    $stmt->close();
+    $mysqli->close();
+    } else if($adminc == 500){
+    // Insert the input data into the database table
+    $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
+    $user_type = "SafetyInspector"; // Define the user type variable
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $stmt->execute();
+
+    // Check for insertion errors
+    if ($stmt->errno) {
+        echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
+    } else {
+        echo "Account created successfully!";
+    }
+
+    // Close the database connection
+    $stmt->close();
+    $mysqli->close();   
+    } else if($adminc == 555){
+    // Insert the input data into the database table
+    $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
+    $user_type = "Supervisor"; // Define the user type variable
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $stmt->execute();
+
+    // Check for insertion errors
+    if ($stmt->errno) {
+        echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
+    } else {
+        echo "Account created successfully!";
+    }
+
+    // Close the database connection
+    $stmt->close();
+    $mysqli->close();
+    } else {
+    // Insert the input data into the database table
+    $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
+    $user_type = "Employee"; // Define the user type variable
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $stmt->execute();
+
+    // Check for insertion errors
+    if ($stmt->errno) {
+        echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
+    } else {
+        echo "Account created successfully!";
+    }
+
+    // Close the database connection
+    $stmt->close();
+    $mysqli->close();
+    }
 }
 ?>
 
@@ -102,6 +180,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
 
         <label>Password:</label><br>
         <input type="password" name="password"><br>
+
+        <label>Admin Code</label><br>
+        <input type="text" name="acode"><br>
 
         <input type="submit" name="create" value="Create Account">
     </
