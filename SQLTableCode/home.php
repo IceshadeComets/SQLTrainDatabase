@@ -111,7 +111,7 @@ if ($mysqli->connect_errno) {
 
 <?php
 // If form is submitted, insert data into table
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["table_name"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["table_name"]) && isset($_POST["submit"])) {
     $table_name = $_POST["table_name"];
 
     // Get fields for specified table
@@ -179,11 +179,16 @@ if (!isset($_POST["table_name"])) {
             echo "<label for='$field_name'>$field_name:</label>";
             echo "<input type='text' name='$field_name' id='$field_name'><br><br>";
         }
-        echo "<input type='submit' value='Add entry'>";
+        echo "<input type='hidden' name='table_name' value='$table_name'>";
+        echo "<input type='submit' name='submit' value='Add entry'>";
         echo "</form>";
     }
 }
 ?>
+
+
+
+
 
 </body>
 </html>
