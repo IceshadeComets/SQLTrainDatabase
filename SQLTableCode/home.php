@@ -142,6 +142,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["table_name"]) && isset
         echo "Error: " . mysqli_error($mysqli);
     } else {
         echo "Entry added successfully!";
+        unset($_POST['submit']);
+        unset($_POST['table_name']);
     }
 }
 
@@ -185,10 +187,5 @@ if (!isset($_POST["table_name"])) {
     }
 }
 ?>
-
-
-
-
-
 </body>
 </html>
