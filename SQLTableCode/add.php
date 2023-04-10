@@ -77,7 +77,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["table_name"]) && isset
     if (!$result) {
         echo "Error: " . mysqli_error($mysqli);
     } else {
-        echo "Entry added successfully!";
+        //echo "Entry added successfully at $table_name";
+        $xKey = mysqli_query($mysqli, "SELECT COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_NAME = '$table_name' AND CONSTRAINT_NAME = 'PRIMARY'");
+        if ($xKey) {
+        $primaryKey = mysqli_fetch_assoc($xKey);
+        $primaryKeyColumn = $primaryKey['COLUMN_NAME'];
+        echo "New Entry successfully added at $table_name with Identifer being: $primaryKeyColumn";
+        }
         unset($_POST['submit']);
         unset($_POST['table_name']);
     }
