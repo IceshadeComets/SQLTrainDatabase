@@ -23,18 +23,30 @@ if ($mysqli->connect_errno) {
 </head>
 
 <body bgcolor="FBB917">
-    <h1>Information Lookup</h1>
-    <form action='search.php' method="POST">
-        <label for="user">Table Name</label><br>
-        <input type='text' name= 'name' id="name" required/> <br> <br>
-        <label for="user">Identifer</label><br>
-        <input type='text' name= 'pk' id="pk" required/> <br> <br>
-        <input type='submit' name= 'clientsearch' id="clientsearch" required/> <br> <br>
-    </form>
+<<?php
+// Retrieve the list of table names
+$tablesResult = mysqli_query($mysqli, "SHOW TABLES");
+$tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
+?>
 
-    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["clientsearch"])) {
+<h1>Search</h1>
+<form action='search.php' method="POST">
+    <label for="table">Select a table:</label>
+    <select name="table" id="table" required>
+        <?php foreach ($tables as $table) { ?>
+            <option value="<?php echo $table['Tables_in_' . $database]; ?>"><?php echo $table['Tables_in_' . $database]; ?></option>
+        <?php } ?>
+    </select>
+    <br><br>
+    <label for="pk">Enter primary key value:</label>
+    <input type='text' name= 'pk' id="pk" required/> <br> <br>
+    <input type='submit' name= 'clientsearch' id="clientsearch" required/> <br> <br>
+</form>
+
+<?php 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["clientsearch"])) {
     // Retrieve the input data to display
-    $name = $_POST["name"];
+    $name = $_POST["table"];
     $pkey = $_POST["pk"];
 
     $xKey = mysqli_query($mysqli, "SELECT COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_NAME = '$name' AND CONSTRAINT_NAME = 'PRIMARY'");
@@ -72,6 +84,7 @@ if ($mysqli->connect_errno) {
     }
 }
 ?>
+
 
 <h1>Return</h1>
     <form action='search.php' method="POST">
