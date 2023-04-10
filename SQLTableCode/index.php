@@ -13,6 +13,8 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
+    session_start();
+
 // If the login form has been submitted, process the input data
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
 
@@ -26,8 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     $stmt->execute();
     $stmt->store_result();
 
-    // If a matching row is found, redirect the user to the home page
+    // If a matching row is found, set the session variable and redirect the user to the home page
     if ($stmt->num_rows == 1) {
+        $stmt->bind_result($username);
+        $stmt->fetch();
+        $_SESSION['username'] = $username; // set session variable
+        $_SESSION['email'] = $email;
         header("Location: home.php");
         exit;
     } else {
@@ -38,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     $stmt->close();
     $mysqli->close();
 }
-
 // If the create account form has been submitted, process the input data
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
     header("Location: connect.php");

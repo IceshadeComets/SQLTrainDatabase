@@ -14,6 +14,19 @@ if ($mysqli->connect_errno) {
 }
 ?>
 
+<?php
+    // Start the session
+    session_start();
+
+    // Check if the user is logged in
+    if (!isset($_SESSION['username'])) {
+        // Redirect the user to the login page
+        header("Location: index.php");
+        exit;
+    }
+    echo "Session username: " . $_SESSION['username'] . "<br>";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,6 +62,7 @@ if ($mysqli->connect_errno) {
 
 }
 ?>
+
 <h2>Update Table</h2>
     <form action='home.php' method="POST">
         <input type='submit' name= 'return3' id="return3" required/> <br> <br>
@@ -74,5 +88,29 @@ if ($mysqli->connect_errno) {
 }
 
 ?>
+
+<?php
+    // Start the session
+    // Check for CEO Existence before printing Generate Report, if not don't show option
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+?>
+    <h2>Generate Report</h2>
+    <form action='home.php' method="POST">
+        <input type='submit' name= 'return2' id="return2" required/> <br> <br>
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return2"])) {
+        header("Location: add.php");
+        exit;
+    // Retrieve the input data to display
+}
+?>
+<?php
+    } else {
+    }
+?>
+
 </body>
 </html>
