@@ -48,6 +48,30 @@ if ($mysqli->connect_errno) {
     // Retrieve the input data to display
 
 }
+?>
+<h2>Update Table</h2>
+    <form action='home.php' method="POST">
+        <input type='submit' name= 'return3' id="return3" required/> <br> <br>
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return3"])) {
+        header("Location: update.php");
+        exit;
+    // Retrieve the input data to display
+
+}
+?>
+<h2>Delete Entry</h2>
+    <form action='home.php' method="POST">
+        <input type='submit' name= 'return4' id="return4" required/> <br> <br>
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return4"])) {
+        header("Location: delete.php");
+        exit;
+    // Retrieve the input data to display
+
+}
 
 ?>
 </body>
