@@ -91,6 +91,28 @@ if ($mysqli->connect_errno) {
 
 <?php
     // Check for CEO Existence before printing Generate Report, if not don't show option
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND (UserType = 'CEO' OR UserType = 'Supervisor')");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+?>
+    <h2>View Employee Information</h2>
+    <form action='home.php' method="POST">
+        <input type='submit' name= 'return12' id="return12" required/> <br> <br>
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return12"])) {
+        header("Location: generatereportfin.php");
+        exit;
+    // Retrieve the input data to display
+}
+?>
+<?php
+    } else {
+    }
+?>
+
+<?php
+    // Check for CEO Existence before printing Generate Report, if not don't show option
     $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
     // If this is true, Return the CEO Result
     if($result->num_rows >= 1){

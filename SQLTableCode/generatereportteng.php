@@ -29,23 +29,33 @@ $tablesResult = mysqli_query($mysqli, "SHOW TABLES");
 $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 ?>
 
-<h1>Generate Report</h1>
+<h1>Generate Repair/Service Report</h1>
 <form action='generatereportteng.php' method="POST">
-    <label>Generate Financial Report</label>
-    <br></br>
-    <label>Enter Report ID</label>
-    <input type='text' name= 'reportid' id="reportid" required/> <br> <br>
-    <input type='submit' name= 'freport' id="freport" required/> <br> <br>
+    <input type='submit' name= 'freport' id="freport" value="Generate Report" required/> <br> <br>
 </form>
 
 <?php 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
 
-    // Display Table of Trains
+    // Display Table of Train Engineers
     echo "List of Train Engineers";
+    $sqltraubs = "SELECT * FROM Employee JOIN trainengineer ON trainengineer.essn = Employee.ssn";
+    $result = mysqli_query($mysqli, $sqltraubs);
+    // Check if there are any rows returned by the query
+    if (mysqli_num_rows($result) > 0) {
+    echo "<table><tr><th>EngineerSSN</th><th>CEOSSN</th><th>FirstName</th><th>MiddleName</th><th>LastName</th><th>Salary</th><th>Sex</th></tr>";
+    while($row = mysqli_fetch_assoc($result)) {
+        echo "<tr><td>" . $row["SSN"] . "</td><td>" . $row["CEOSSN"] . "</td><td>" .  $row["FirstName"] . "</td><td>" . $row["MiddleName"] . "</td><td>" . $row["LastName"] . "</td><td>" . $row["Salary"] . "</td><td>" . $row["Sex"] . "</td></tr>";
+    }
+    // Close the table
+    echo "</table>";
+    } else {
+        // If no rows returned, display a message
+        echo "No results found.";
+    }
 
-
-    $sqltraubs = "SELECT * FROM Train";
+    echo "List of Trains that need to be repaired";
+    $sqltraubs = "SELECT * FROM Train WHERE inspection_status = 'Bad'";
     $result = mysqli_query($mysqli, $sqltraubs);
 
     // Check if there are any rows returned by the query
@@ -61,9 +71,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
         echo "No results found.";
     }
 
-    echo "List of Parts";
+    echo "List of Parts and Repair/Service Orders";
     // Prepare the SQL query to retrieve all columns and rows from "parts" table
-    $sqlparts = "SELECT * FROM parts";
+    $sqlparts = "SELECT * FROM parts AS P JOIN repairservice AS R ON P.TrainID = R.TrainID";
 
     // Execute the SQL query and store the result in a variable
     $result = mysqli_query($mysqli, $sqlparts);
@@ -71,11 +81,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
     // Check if there are any rows returned by the query
     if (mysqli_num_rows($result) > 0) {
         // Display the table headers
-        echo "<table><tr><th>Part Number</th><th>Supplier Name</th><th>Train ID</th><th>Cost</th></tr>";
+        echo "<table><tr><th>Part Number</th><th>Supplier Name</th><th>Train ID</th><th>Repair ID</th><th>EngineerSSN</th><th</tr>";
 
         // Output the table rows
         while($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row["PartNumber"] . "</td><td>" . $row["SupplierName"] . "</td><td>" . $row["TrainID"] . "</td><td>" . $row["Cost"] . "</td></tr>";
+            echo "<tr><td>" . $row["PartNumber"] . "</td><td>" . $row["SupplierName"] . "</td><td>" . $row["TrainID"] . "</td><td>" . $row["RepairID"] . "</td><td>" . $row["ESSN"] . "</td></tr>";
         }
 
         // Close the table
@@ -84,102 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
         // If no rows returned, display a message
         echo "No results found.";
     }
-
-    echo "List of Repair/Service Orders";
-    // Prepare the SQL query to retrieve all columns and rows from "parts" table
-    $sqlrepair = "SELECT * FROM repairservice";
-    // Execute the SQL query and store the result in a variable
-    $result = mysqli_query($mysqli, $sqlrepair);
-
-    // Check if there are any rows returned by the query
-    if (mysqli_num_rows($result) > 0) {
-        // Display the table headers
-        echo "<table><tr><th>RepairID</th><th>ESSN</th><th>TrainID</th><th>Cost</th></tr>";
-
-        // Output the table rows
-        while($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row["RepairID"] . "</td><td>" . $row["ESSN"] . "</td><td>" . $row["TrainID"] . "</td><td>" . $row["Cost"] . "</td></tr>";
-        }
-
-        // Close the table
-        echo "</table>";
-    } else {
-        // If no rows returned, display a message
-        echo "No results found.";
-    }
-
-
-    // Display Total Cost of all Trains
-    $sqlcost = "SELECT cost FROM Train";
-    //mysqli_query($mysqli, $sqlcost);
-    $result = mysqli_query($mysqli, $sqlcost);
-    // Initialize a variable to store the sum of all costs
-    $totalCostTrains = 0;
-
-    // Check if there are any rows returned by the query
-    if (mysqli_num_rows($result) > 0) {
-        // Output the table rows and add up the cost
-        while($row = mysqli_fetch_assoc($result)) {
-            $totalCostTrains += $row["cost"];
-        }
-
-        // Output the total cost
-
-    }
-
-    // Display Total Cost of all Parts
-    $sqlcostparts = "SELECT cost FROM parts";
-    //mysqli_query($mysqli, $sqlcost);
-    $result = mysqli_query($mysqli, $sqlcostparts);
-    // Initialize a variable to store the sum of all costs
-    $totalCostParts = 0;
-
-    // Check if there are any rows returned by the query
-    if (mysqli_num_rows($result) > 0) {
-        // Output the table rows and add up the cost
-        while($row = mysqli_fetch_assoc($result)) {
-            $totalCostParts += $row["cost"];
-        }
-
-        // Output the total cost
-    }
-
-    $sqlcostrepair = "SELECT cost FROM repairservice";
-    //mysqli_query($mysqli, $sqlcost);
-    $result = mysqli_query($mysqli, $sqlcostrepair);
-    // Initialize a variable to store the sum of all costs
-    $totalCostRepair = 0;
-
-    // Check if there are any rows returned by the query
-    if (mysqli_num_rows($result) > 0) {
-        // Output the table rows and add up the cost
-        while($row = mysqli_fetch_assoc($result)) {
-            $totalCostRepair += $row["cost"];
-        }
-
-        // Output the total cost
-    }
-
-    echo "Total cost of all trains: " . $totalCostTrains . PHP_EOL;
-    echo "Total cost of all parts: " . $totalCostParts . PHP_EOL;
-    echo "Total cost of all repairs: " . $totalCostRepair . PHP_EOL;
-    $netprofits = $totalCostTrains - ($totalCostRepair + $totalCostParts);
-    echo "Net Profits: " . $netprofits . PHP_EOL;
-
-
-    //SELECT cost FROM trains_table;
-
-
-
-
-    /* Lets Generate a Report, This Report will need
-    - Cost of Each Train bought for the Client
-    - Cost to buy each Part to build the train
-    - Cost To Repair/Service Train
-
-    // Step 1, Retrieve the Costs of all trains
-    $xCosts = mysqli_quert
-    */
 }
 ?>
 

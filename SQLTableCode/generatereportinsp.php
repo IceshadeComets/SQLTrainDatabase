@@ -29,13 +29,9 @@ $tablesResult = mysqli_query($mysqli, "SHOW TABLES");
 $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 ?>
 
-<h1>Generate Report</h1>
+<h1>Generate Inspection Report</h1>
 <form action='generatereportinsp.php' method="POST">
-    <label>Generate Inspection Report</label>
-    <br></br>
-    <label>Enter Report ID</label>
-    <input type='text' name= 'reportid' id="reportid" required/> <br> <br>
-    <input type='submit' name= 'freport' id="freport" required/> <br> <br>
+    <input type='submit' name= 'freport' id="freport" value="Generate Report" required/> <br> <br>
 </form>
 
 <?php 
@@ -93,23 +89,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
         echo "No results found.";
     }
 
-    // Prepare the SQL query to retrieve all columns and rows from "parts" table
-    
+    echo "Inspection Statuses and the Number of Trains";
 
+    $sqltraubsx = "SELECT inspection_status, COUNT(*) as count FROM Train WHERE last_inspected IS NOT NULL GROUP BY inspection_status";
+    $result = mysqli_query($mysqli, $sqltraubsx);
 
-    //SELECT cost FROM trains_table;
-
-
-
-
-    /* Lets Generate a Report, This Report will need
-    - Cost of Each Train bought for the Client
-    - Cost to buy each Part to build the train
-    - Cost To Repair/Service Train
-
-    // Step 1, Retrieve the Costs of all trains
-    $xCosts = mysqli_quert
-    */
+    if (mysqli_num_rows($result) > 0) {
+        echo "<table><tr><th>Inspection Status</th><th>Count</th></tr>";
+        while($row = mysqli_fetch_assoc($result)) {
+            echo "<tr><td>" . $row["inspection_status"] . "</td><td>" . $row["count"] . "</td></tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "No results found.";
+    }
 }
 ?>
 
@@ -122,8 +115,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return"])) {
         header("Location: home.php");
         exit;
-    // Retrieve the input data to display
-
     }
 
 
