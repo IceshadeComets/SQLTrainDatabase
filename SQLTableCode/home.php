@@ -90,19 +90,62 @@ if ($mysqli->connect_errno) {
 ?>
 
 <?php
-    // Start the session
     // Check for CEO Existence before printing Generate Report, if not don't show option
     $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
     // If this is true, Return the CEO Result
     if($result->num_rows >= 1){
 ?>
-    <h2>Generate Report</h2>
+    <h2>Generate Financial Report</h2>
     <form action='home.php' method="POST">
-        <input type='submit' name= 'return2' id="return2" required/> <br> <br>
+        <input type='submit' name= 'return5' id="return5" required/> <br> <br>
     </form>
 
-    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return2"])) {
-        header("Location: add.php");
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return5"])) {
+        header("Location: generatereportfin.php");
+        exit;
+    // Retrieve the input data to display
+}
+?>
+<?php
+    } else {
+    }
+?>
+
+<?php
+    // Check for CEO Existence before printing Generate Report, if not don't show option
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'SafetyInspector'");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+?>
+    <h2>Generate Inspection Report</h2>
+    <form action='home.php' method="POST">
+        <input type='submit' name= 'return6' id="return6" required/> <br> <br>
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return6"])) {
+        header("Location: generatereportinsp.php");
+        exit;
+    // Retrieve the input data to display
+}
+?>
+<?php
+    } else {
+    }
+?>
+
+<?php
+    // Check for CEO Existence before printing Generate Report, if not don't show option
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'TrainEngineer'");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+?>
+    <h2>Generate Repair/Service Report</h2>
+    <form action='home.php' method="POST">
+        <input type='submit' name= 'return7' id="return7" required/> <br> <br>
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return7"])) {
+        header("Location: generatereportteng.php");
         exit;
     // Retrieve the input data to display
 }

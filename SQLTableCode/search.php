@@ -23,7 +23,7 @@ if ($mysqli->connect_errno) {
 </head>
 
 <body bgcolor="FBB917">
-<<?php
+<?php
 // Retrieve the list of table names
 $tablesResult = mysqli_query($mysqli, "SHOW TABLES");
 $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
