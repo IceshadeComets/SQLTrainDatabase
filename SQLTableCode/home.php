@@ -1,3 +1,6 @@
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
 <?php
 //Variables to connect to the database
 $host = "localhost";
@@ -14,6 +17,8 @@ if ($mysqli->connect_errno) {
 }
 ?>
 
+<h1>Train Database</h1>
+
 <?php
     // Start the session
     session_start();
@@ -24,7 +29,7 @@ if ($mysqli->connect_errno) {
         header("Location: index.php");
         exit;
     }
-    echo "Session username: " . $_SESSION['username'] . "<br>";
+    echo "Session username: " . $_SESSION['username'] . "<br><br>";
 ?>
 <form action='home.php' method="POST">
         <input type='submit' name= 'return0' id="return0" value="logout" required/> 

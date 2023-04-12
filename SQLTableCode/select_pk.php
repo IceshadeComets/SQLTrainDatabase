@@ -1,3 +1,6 @@
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
 <?php
 // Variables to connect to the database
 $host = "localhost";
@@ -68,7 +71,7 @@ if ($result->num_rows > 0) {
         if($result->num_rows >= 1){
             //$result->num_rows;
             echo "<h2>Search Results:</h2>";
-            echo "<table border='1'>";
+            echo "<table border='4'>";
             
             // Print table headers
             $columnsResult = mysqli_query($mysqli, "SHOW COLUMNS FROM $table");

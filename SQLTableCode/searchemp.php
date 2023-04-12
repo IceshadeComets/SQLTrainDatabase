@@ -1,3 +1,6 @@
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
 <?php
 //Variables to connect to the database
 $host = "localhost";
@@ -19,7 +22,7 @@ if ($mysqli->connect_errno) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Train Database</title>
 </head>
 
 <body bgcolor="FBB917">
@@ -58,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["empsearch"])) {
     // rest of your code to display employee info goes here...
     if($result->num_rows >= 1){
         echo "<h2>Search Results:</h2>";
-        echo "<table border='1'>
+        echo "<table border='4'>
         <tr>
         <th>SSN</th>
         <th>CEOSSN</th>
@@ -91,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["empsearch"])) {
     $result = mysqli_query($mysqli,"SELECT * FROM dependents as D WHERE ESSN = '$ssn'");
     if($result->num_rows >= 1){
         echo "<h2>List of Dependents:</h2>";
-        echo "<table border='1'>
+        echo "<table border='4'>
         <tr>
         <th>ESSN</th>
         <th>FirstName</th>

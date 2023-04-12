@@ -1,3 +1,6 @@
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
 <?php
 //Variables to connect to the database
 $host = "localhost";
@@ -58,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["trainsearch"])) {
     // rest of your code to display employee info goes here...
     if($result->num_rows >= 1){
         echo "<h2>Search Results:</h2>";
-        echo "<table border='1'>
+        echo "<table border='4'>
         <tr>
         <th>TrainID</th>
         <th>InspectorSSN</th>

@@ -1,3 +1,6 @@
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
 <?php
 //Variables to connect to the database
 $host = "localhost";
@@ -36,9 +39,6 @@ if ($mysqli->connect_errno) {
                 // CEO Check
                 $resultx = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
                 if($resultx->num_rows >= 1){
-                    if ($table_name == "users") {
-                        continue;
-                    }
                 }
                 // Supervisor Check
                 $resultx = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'Supervisor'");
