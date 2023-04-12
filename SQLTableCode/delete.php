@@ -37,10 +37,7 @@ if ($mysqli->connect_errno) {
         ?>
     </select>
     <br><br>
-    <label for="pk">Enter the primary key value:</label>
-    <input type="text" name="pk" id="pk" required>
-    <br><br>
-    <input type='submit' name='clientdelete' id="clientdelete" value="Delete" required/>
+    <input type='submit' name='clientdelete' id="clientdelete" value="Submit" required/>
 </form>
 
 <h1>Return</h1>
@@ -50,22 +47,11 @@ if ($mysqli->connect_errno) {
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["clientdelete"])) {
-    // Retrieve the input data to delete
-    $table = $_POST["table"];
-    $pk = $_POST["pk"];
-
-    $xKey = mysqli_query($mysqli, "SELECT COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_NAME = '$table' AND CONSTRAINT_NAME = 'PRIMARY'");
-    if ($xKey) {
-        $primaryKey = mysqli_fetch_assoc($xKey);
-        $primaryKeyColumn = $primaryKey['COLUMN_NAME'];
-        echo "The primary key column for $table is: $primaryKeyColumn";
-        $result = mysqli_query($mysqli,"DELETE FROM $table WHERE $table.$primaryKeyColumn = '$pk'");
-        if(mysqli_affected_rows($mysqli) > 0){
-            echo "<h2>Row deleted successfully.</h2>";
-        } else {
-            echo "<h2>No rows found to delete.</h2>";
-        }
-    }
+    // Retrieve the input data to display
+    session_start();
+    $_SESSION['POST'] = $_POST["table"]; // store post variable which is table in the session
+    header("Location: delete_pk.php");
+    exit;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return"])) {
