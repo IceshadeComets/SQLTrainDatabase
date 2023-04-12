@@ -34,9 +34,70 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
     <form action='search.php' method="POST">
         <label for="table">Select a table:</label>
         <select name="table" id="table" required>
-            <?php foreach ($tables as $table) { ?>
-                <option value="<?php echo $table['Tables_in_' . $database]; ?>"><?php echo $table['Tables_in_' . $database]; ?></option>
-            <?php } ?>
+        <?php
+            session_start();
+            // Retrieve the list of tables from the database
+            $result = mysqli_query($mysqli, "SHOW TABLES");
+            while ($row = mysqli_fetch_row($result)) {
+                $table_name = $row[0];
+                // CEO Check
+                $resultx = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
+                if($resultx->num_rows >= 1){
+                    if ($table_name == "users") {
+                        continue;
+                    }
+                }
+                // Supervisor Check
+                $resultx = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'Supervisor'");
+                if($resultx->num_rows >= 1){
+                    if ($table_name == "builds" || $table_name == "ceo" || $table_name == "frieghtcars" ||
+                    $table_name == "locomotives" || $table_name == "parts" || $table_name == "repairservice" ||
+                    $table_name == "safetyinspector" || $table_name == "train" || $table_name == "transitcars" ||
+                    $table_name == "users") {
+                    // Skip the excluded table names
+                    continue;
+                }
+                }
+                // Train Engineer Checkk
+                $resultx = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'TrainEngineer'");
+                if($resultx->num_rows >= 1){
+                if ($table_name == "ceo" || $table_name == "employee" || $table_name == "freightcarworker" ||
+                    $table_name == "locomotiveworker" || $table_name == "safetyinspector" || $table_name == "trainengineer" ||
+                    $table_name == "transitworker" || $table_name == "users") {
+                    // Skip the excluded table names
+                    continue;
+                }
+                }
+                // Safety Inspector Check
+                $resultx = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'SafetyInspector'");
+                if($resultx->num_rows >= 1){
+                if ($table_name == "builds" || $table_name == "ceo" || $table_name == "employee" || 
+                    $table_name == "frieghtcars" || $table_name == "freightcarworker" || $table_name == "locomotives" || 
+                    $table_name == "locomotiveworker" || $table_name == "parts" || $table_name == "repairservice" || 
+                    $table_name == "safetyinspector" || $table_name == "trainengineer" || $table_name == "transitcars" || 
+                    $table_name == "transitworker" || $table_name == "users") {
+                    // Skip the excluded table names
+                    continue;
+                }
+                }
+                // Employee Check
+                $resultx = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'Employee'");
+                if($resultx->num_rows >= 1){
+                    if ($table_name == "builds" || $table_name == "ceo" || $table_name == "employee" || 
+                    $table_name == "frieghtcars" || $table_name == "freightcarworker" || $table_name == "locomotives" || 
+                    $table_name == "locomotiveworker" || $table_name == "parts" || $table_name == "repairservice" || 
+                    $table_name == "safetyinspector" || $table_name == "train" || $table_name == "trainengineer" || 
+                    $table_name == "transitcars" || $table_name == "transitworker" || $table_name == "users") {
+                    // Skip the excluded table names
+                    continue;
+                }
+                }
+                // Check if the current table is "users" and skip it if it is
+                // Output each table as an option in the dropdown menu
+                echo "<option value='$table_name'>$table_name</option>";
+            }
+            session_abort();
+            ?>
         </select>
         <br><br>
         <input type='submit' name= 'tableSelect' id="tableSelect" required/> <br> <br>
