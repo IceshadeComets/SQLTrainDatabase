@@ -29,8 +29,8 @@ $tablesResult = mysqli_query($mysqli, "SHOW TABLES");
 $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 ?>
 
-<h1>Search For Employee Information</h1> 
-<<form action='searchemp.php' method="POST">
+<h1>View Employee Information</h1> 
+<form action='searchemp.php' method="POST">
     <label for="ssn">Select Employee</label><br>
     <select name="ssn" id="ssn">
         <?php
