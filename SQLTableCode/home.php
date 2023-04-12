@@ -31,6 +31,7 @@ if ($mysqli->connect_errno) {
 </form>
 
 <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return0"])) {
+        session_abort();
         header("Location: index.php");
         exit;
     // Retrieve the input data to display

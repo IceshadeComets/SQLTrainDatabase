@@ -26,6 +26,7 @@ if ($mysqli->connect_errno) {
 <?php
 // If form is submitted, insert data into table
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["table_name"]) && isset($_POST["submit"])) {
+
     $table_name = $_POST["table_name"];
 
     // Get fields for specified table
@@ -90,24 +91,118 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["table_name"]) && isset
 }
 
 // If no table is specified, show dropdown to select table
-if (!isset($_POST["table_name"])) {
-    $tables_query = "SHOW TABLES";
-    $tables_result = mysqli_query($mysqli, $tables_query);
-
-    if (!$tables_result) {
-        echo "Error: " . mysqli_error($mysqli);
-    } else {
-        echo "<form method='POST'>";
-        echo "<label for='table_name'>Table name:</label>";
-        echo "<select name='table_name' id='table_name'>";
-        while ($table_row = mysqli_fetch_row($tables_result)) {
-            echo "<option value='$table_row[0]'>$table_row[0]</option>";
+if (!isset($_POST["table_name"])) {    
+    session_start();
+    // If Employee
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'Employee'");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+        $tables_query = "SHOW TABLES FROM 471project WHERE LOWER(`Tables_in_471project`) NOT IN ('builds', 'ceo', 'employee', 'frieghtcars', 'freightcarworker', 'locomotives', 'locomotiveworker', 'parts', 'repairservice', 'safetyinspector', 'train', 'trainengineer', 'transitcars', 'transitworker', 'users')";
+        $tables_result = mysqli_query($mysqli, $tables_query);
+        if (!$tables_result) {
+            echo "Error: " . mysqli_error($mysqli);
+        } else {
+            echo "<form method='POST'>";
+            echo "<label for='table_name'>Table name:</label>";
+            echo "<select name='table_name' id='table_name'>";
+            while ($table_row = mysqli_fetch_row($tables_result)) {
+                echo "<option value='$table_row[0]'>$table_row[0]</option>";
+            }
+            echo "</select>";
+            echo "<br><br>";
+            echo "<input type='submit' value='Select table'>";
+            echo "</form>";
         }
-        echo "</select>";
-        echo "<br><br>";
-        echo "<input type='submit' value='Select table'>";
-        echo "</form>";
     }
+    // If Supervisor
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'Supervisor'");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+        $tables_query = "SHOW TABLES FROM 471project WHERE LOWER(`Tables_in_471project`) NOT IN ('builds', 'ceo', 'frieghtcars', 'locomotives', 'parts', 'repairservice', 'safetyinspector', 'train', 'transitcars', 'users')";
+        $tables_result = mysqli_query($mysqli, $tables_query);
+        if (!$tables_result) {
+            echo "Error: " . mysqli_error($mysqli);
+        } else {
+            echo "<form method='POST'>";
+            echo "<label for='table_name'>Table name:</label>";
+            echo "<select name='table_name' id='table_name'>";
+            while ($table_row = mysqli_fetch_row($tables_result)) {
+                echo "<option value='$table_row[0]'>$table_row[0]</option>";
+            }
+            echo "</select>";
+            echo "<br><br>";
+            echo "<input type='submit' value='Select table'>";
+            echo "</form>";
+        }
+    }
+    // If SafetyInspector
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'SafetyInspector'");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+        $tables_query = "SHOW TABLES FROM 471project WHERE LOWER(`Tables_in_471project`) NOT IN ('builds', 'ceo', 'employee', 'frieghtcars', 'freightcarworker', 'locomotives', 'locomotiveworker', 'parts', 'repairservice', 'safetyinspector', 'trainengineer', 'transitcars', 'transitworker', 'users')";
+        $tables_result = mysqli_query($mysqli, $tables_query);
+        if (!$tables_result) {
+            echo "Error: " . mysqli_error($mysqli);
+        } else {
+            echo "<form method='POST'>";
+            echo "<label for='table_name'>Table name:</label>";
+            echo "<select name='table_name' id='table_name'>";
+            while ($table_row = mysqli_fetch_row($tables_result)) {
+                echo "<option value='$table_row[0]'>$table_row[0]</option>";
+            }
+            echo "</select>";
+            echo "<br><br>";
+            echo "<input type='submit' value='Select table'>";
+            echo "</form>";
+        }
+    }
+
+    // If TrainEngineer
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'TrainEngineer'");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+        $tables_query = "SHOW TABLES FROM 471project WHERE LOWER(`Tables_in_471project`) NOT IN ('ceo', 'employee', 'freightcarworker', 'locomotiveworker', 'safetyinspector', 'trainengineer', 'transitworker', 'users')";
+        $tables_result = mysqli_query($mysqli, $tables_query);
+        if (!$tables_result) {
+            echo "Error: " . mysqli_error($mysqli);
+        } else {
+            echo "<form method='POST'>";
+            echo "<label for='table_name'>Table name:</label>";
+            echo "<select name='table_name' id='table_name'>";
+            while ($table_row = mysqli_fetch_row($tables_result)) {
+                echo "<option value='$table_row[0]'>$table_row[0]</option>";
+            }
+            echo "</select>";
+            echo "<br><br>";
+            echo "<input type='submit' value='Select table'>";
+            echo "</form>";
+        }
+    }
+
+    // If CEO
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
+    // If this is true, Return the CEO Result
+    if($result->num_rows >= 1){
+        $tables_query = "SHOW TABLES FROM 471project WHERE LOWER(`Tables_in_471project`) NOT IN ('users')";
+        $tables_result = mysqli_query($mysqli, $tables_query);
+        if (!$tables_result) {
+            echo "Error: " . mysqli_error($mysqli);
+        } else {
+            echo "<form method='POST'>";
+            echo "<label for='table_name'>Table name:</label>";
+            echo "<select name='table_name' id='table_name'>";
+            while ($table_row = mysqli_fetch_row($tables_result)) {
+                echo "<option value='$table_row[0]'>$table_row[0]</option>";
+            }
+            echo "</select>";
+            echo "<br><br>";
+            echo "<input type='submit' value='Select table'>";
+            echo "</form>";
+        }
+    }
+    session_abort();
+    // If CEO
+
 } else { // If table is specified, show form with input fields for each table column
     $table_name = $_POST["table_name"];
 
