@@ -71,16 +71,6 @@ if ($mysqli->connect_errno) {
 }
 ?>
 
-<h2>Update Table</h2>
-    <form action='home.php' method="POST">
-        <input type='submit' name= 'return3' id="return3" required/> <br> <br>
-    </form>
-
-    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return3"])) {
-        header("Location: update.php");
-        exit;
-}
-?>
 <h2>Delete Entry</h2>
     <form action='home.php' method="POST">
         <input type='submit' name= 'return4' id="return4" required/> <br> <br>
@@ -145,6 +135,25 @@ if ($mysqli->connect_errno) {
     $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
     if($result->num_rows >= 1){
 ?>
+    <h2>View Train Information</h2>
+    <form action='home.php' method="POST">
+        <input type='submit' name= 'return14' id="return14" required/> <br> <br>
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return5"])) {
+        header("Location: generatereportfin.php");
+        exit;
+}
+?>
+<?php
+    }
+?>
+
+<?php
+    // Check for CEO
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
+    if($result->num_rows >= 1){
+?>
     <h2>Generate Financial Report</h2>
     <form action='home.php' method="POST">
         <input type='submit' name= 'return5' id="return5" required/> <br> <br>
@@ -160,9 +169,25 @@ if ($mysqli->connect_errno) {
 ?>
 
 <?php
-    // Check for Safety Inspector
-    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'SafetyInspector'");
+    // Check for CEO
+    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
     if($result->num_rows >= 1){
+?>
+    <h2>Generate End User Codes</h2>
+    <form action='home.php' method="POST">
+        <input type='submit' name= 'return99' id="return99" required/> <br> <br>
+    </form>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return99"])) {
+        header("Location: endcodes.php");
+        exit;
+}
+?>
+<?php
+    }
+?>
+
+<?php
 ?>
     <h2>Generate Inspection Report</h2>
     <form action='home.php' method="POST">
@@ -175,13 +200,9 @@ if ($mysqli->connect_errno) {
 }
 ?>
 <?php
-    }
 ?>
 
 <?php
-    // Check for Train Engineer
-    $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'TrainEngineer'");
-    if($result->num_rows >= 1){
 ?>
     <h2>Generate Repair/Service Report</h2>
     <form action='home.php' method="POST">
@@ -195,7 +216,6 @@ if ($mysqli->connect_errno) {
 }
 ?>
 <?php
-    }
 ?>
 
 </body>
