@@ -22,7 +22,7 @@ if ($mysqli->connect_errno) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Train Database</title>
 </head>
 
 <body bgcolor="FBB917">
@@ -82,78 +82,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
         echo "No results found.";
     }
 
-
     // Display Total Cost of all Trains
     $sqlcost = "SELECT cost FROM Train";
-    //mysqli_query($mysqli, $sqlcost);
     $result = mysqli_query($mysqli, $sqlcost);
-    // Initialize a variable to store the sum of all costs
     $totalCostTrains = 0;
-
-    // Check if there are any rows returned by the query
     if (mysqli_num_rows($result) > 0) {
-        // Output the table rows and add up the cost
         while($row = mysqli_fetch_assoc($result)) {
             $totalCostTrains += $row["cost"];
         }
-
-        // Output the total cost
-
     }
 
     // Display Total Cost of all Parts
     $sqlcostparts = "SELECT cost FROM parts";
-    //mysqli_query($mysqli, $sqlcost);
     $result = mysqli_query($mysqli, $sqlcostparts);
-    // Initialize a variable to store the sum of all costs
     $totalCostParts = 0;
-
-    // Check if there are any rows returned by the query
     if (mysqli_num_rows($result) > 0) {
-        // Output the table rows and add up the cost
         while($row = mysqli_fetch_assoc($result)) {
             $totalCostParts += $row["cost"];
         }
-
-        // Output the total cost
     }
 
+    // Display Total Cost of Repairs
     $sqlcostrepair = "SELECT cost FROM repairservice";
-    //mysqli_query($mysqli, $sqlcost);
     $result = mysqli_query($mysqli, $sqlcostrepair);
-    // Initialize a variable to store the sum of all costs
     $totalCostRepair = 0;
-
-    // Check if there are any rows returned by the query
     if (mysqli_num_rows($result) > 0) {
-        // Output the table rows and add up the cost
         while($row = mysqli_fetch_assoc($result)) {
             $totalCostRepair += $row["cost"];
         }
-
-        // Output the total cost
     }
 
-    echo "Total cost of all trains: " . $totalCostTrains . PHP_EOL;
-    echo "Total cost of all parts: " . $totalCostParts . PHP_EOL;
-    echo "Total cost of all repairs: " . $totalCostRepair . PHP_EOL;
+    echo "<h2>Receipt</h2>";
+
+    echo "<b>Total cost of all trains: $</b>" . $totalCostTrains . "<br>";
+    echo "<b>Total cost of all parts: $</b>" . $totalCostParts . "<br>";
+    echo "<b>Total cost of all repairs: $</b>" . $totalCostRepair . "<br>";
     $netprofits = $totalCostTrains - ($totalCostRepair + $totalCostParts);
-    echo "Net Profits: " . $netprofits . PHP_EOL;
-
-
-    //SELECT cost FROM trains_table;
-
-
-
-
-    /* Lets Generate a Report, This Report will need
-    - Cost of Each Train bought for the Client
-    - Cost to buy each Part to build the train
-    - Cost To Repair/Service Train
-
-    // Step 1, Retrieve the Costs of all trains
-    $xCosts = mysqli_quert
-    */
+    echo "<b>Net Profits: $</b>" . $netprofits . "<br>";
 }
 ?>
 
@@ -166,11 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return"])) {
         header("Location: home.php");
         exit;
-    // Retrieve the input data to display
-
     }
-
-
          ?>
 </body>
 </html>

@@ -41,10 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
             header("Location: home.php");
             exit;
         } else {
-            echo "Invalid email or password";
+            echo "<b>Invalid email or password</b>";
         }
     } else {
-        echo "Invalid email or password";
+        echo "<b>Invalid email or password</b>";
     }
 
     // Close the database connection
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login or Create Account</title>
+    <title>Train Database</title>
     <style>
         h1, h2, form {
             text-align: center;

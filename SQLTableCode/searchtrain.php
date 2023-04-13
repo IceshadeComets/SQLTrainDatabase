@@ -22,12 +22,11 @@ if ($mysqli->connect_errno) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Train Information</title>
+    <title>Train Database</title>
 </head>
 
 <body bgcolor="FBB917">
 <?php
-// Retrieve the list of table names
 $tablesResult = mysqli_query($mysqli, "SHOW TABLES");
 $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 ?>
@@ -37,11 +36,9 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
     <label for="TrainID">Select Train</label><br>
     <select name="TrainID" id="TrainID">
         <?php
-            // Retrieve list of TrainIDs and LocomotiveTypes from train table
+            // Retrieve List of Train IDS and Locomotive Types and Display them in the Drop Down Menu
             $sql = "SELECT TrainID, LocomotiveType FROM train";
             $result = $mysqli->query($sql);
-
-            // Display TrainIDs and LocomotiveTypes as options in dropdown menu
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     echo "<option value='" . $row["TrainID"] . "'>" . $row["TrainID"] . " - " . $row["LocomotiveType"] . "</option>";
@@ -54,11 +51,10 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 
 <?php 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["trainsearch"])) {
-    // Retrieve the input data to display
     $trainid = $_POST["TrainID"];
     $result = mysqli_query($mysqli,"SELECT * FROM train WHERE train.trainid = '$trainid'");
 
-    // rest of your code to display employee info goes here...
+    // Display Train Information
     if($result->num_rows >= 1){
         echo "<h2>Search Results:</h2>";
         echo "<table border='4'>
@@ -97,11 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["trainsearch"])) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return"])) {
         header("Location: home.php");
         exit;
-    // Retrieve the input data to display
-
     }
-
-
          ?>
 </body>
 </html>

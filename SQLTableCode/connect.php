@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login or Create Account</title>
+    <title>Train Database</title>
     <style>
         h1, h2, form {
             text-align: center;

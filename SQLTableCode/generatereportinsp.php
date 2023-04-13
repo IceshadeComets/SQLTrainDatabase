@@ -22,7 +22,7 @@ if ($mysqli->connect_errno) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate Inspection Report</title>
+    <title>Train Database</title>
 </head>
 
 <body bgcolor="FBB917">
@@ -38,7 +38,7 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 
 <?php 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
-
+    // List of Safety Inspectors  
     echo "<h2><b>List of Safety Inspectors</h2></b>";
     $sqltraubs = "SELECT * FROM Employee JOIN safetyinspector ON safetyinspector.essn = Employee.ssn";
     $result = mysqli_query($mysqli, $sqltraubs);
@@ -52,8 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
         echo "No results found.";
       }
 
+    // List of Recently Inspected Trains
     echo "<h2><b>List of the 5 most Recently Inspected Trains</h2></b>";
-
     $sqltraubs = "SELECT * FROM Train ORDER BY last_inspected DESC LIMIT 5";
     $result = mysqli_query($mysqli, $sqltraubs);
 
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
         echo "No results found.";
       }
       
-
+    // Last of Last Inspected Trains
     echo "<h2><b>List of the 5 Furthest Inspected Trains</h2></b>";
     $sqltraubs = "SELECT * FROM Train WHERE last_inspected IS NOT NULL ORDER BY DATEDIFF(NOW(), last_inspected) DESC LIMIT 5";
     $result = mysqli_query($mysqli, $sqltraubs);

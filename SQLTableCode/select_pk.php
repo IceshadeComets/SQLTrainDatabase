@@ -16,11 +16,10 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-// Retrieve the selected table name from the session
 session_start();
-$table = $_SESSION['POST']; // store post variable which is table
+$table = $_SESSION['POST'];
 
-// Retrieve the primary key column name for the selected table
+// Retrieve the Primary Key Column Name
 $result = mysqli_query($mysqli, "SHOW KEYS FROM $table WHERE Key_name = 'PRIMARY'");
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
@@ -44,10 +43,9 @@ if ($result->num_rows > 0) {
     <h1>Search Results</h1>
 
     <form action='select_pk.php' method="POST">
-        <label for="primaryKeyValue">Select a primary key value:</label>
+        <label for="primaryKeyValue"><b>Select a primary key value:</b></label>
         <select name="primaryKeyValue" id="primaryKeyValue" required>
             <?php
-            // Fetch primary key values from the selected table
             $result = $mysqli->query("SELECT $primaryKeyColumn FROM $table");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -66,14 +64,10 @@ if ($result->num_rows > 0) {
     <?php 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["selectPK"])) {
         $primaryKeyValue = $_POST["primaryKeyValue"];
-        // Fetch the row from the table using the primary key value
         $result = mysqli_query($mysqli, "SELECT * FROM $table WHERE $primaryKeyColumn = '$primaryKeyValue'");
         if($result->num_rows >= 1){
-            //$result->num_rows;
             echo "<h2>Search Results:</h2>";
             echo "<table border='4'>";
-            
-            // Print table headers
             $columnsResult = mysqli_query($mysqli, "SHOW COLUMNS FROM $table");
             $columns = mysqli_fetch_all($columnsResult, MYSQLI_ASSOC);
             echo "<tr>";
@@ -81,8 +75,6 @@ if ($result->num_rows > 0) {
                 echo "<th>" . $column['Field'] . "</th>";
             }
             echo "</tr>";
-
-            // Print table rows
             while($row = mysqli_fetch_array($result)) {
                 echo "<tr>";
                 foreach ($columns as $column) {

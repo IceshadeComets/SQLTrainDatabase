@@ -27,7 +27,6 @@ if ($mysqli->connect_errno) {
 
 <body bgcolor="FBB917">
 <?php
-// Retrieve the list of table names
 $tablesResult = mysqli_query($mysqli, "SHOW TABLES");
 $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 ?>
@@ -37,12 +36,9 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
     <label for="ssn">Select Employee</label><br>
     <select name="ssn" id="ssn">
         <?php
-
-            // Retrieve list of SSNs and names from employee table
+            // Get List of SSNs and Concatenate them to display in the Drop Down Menu
             $sql = "SELECT SSN, CONCAT(FirstName, ' ', LastName) AS Name FROM employee";
             $result = $mysqli->query($sql);
-
-            // Display SSNs and names as options in dropdown menu
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     echo "<option value='" . $row["SSN"] . "'>" . $row["SSN"] . " - " . $row["Name"] . "</option>";
@@ -55,10 +51,9 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 
 <?php 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["empsearch"])) {
-    // Retrieve the input data to display
     $ssn = $_POST["ssn"];
+    // Display Employee Information
     $result = mysqli_query($mysqli,"SELECT * FROM employee WHERE SSN = '$ssn'");
-    // rest of your code to display employee info goes here...
     if($result->num_rows >= 1){
         echo "<h2>Search Results:</h2>";
         echo "<table border='4'>
@@ -89,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["empsearch"])) {
         }
         echo "</table>";
     }
-    // Print out dependents if they exist
+    // Display Dependant INformaiton
     $ssn = $_POST["ssn"];
     $result = mysqli_query($mysqli,"SELECT * FROM dependents as D WHERE ESSN = '$ssn'");
     if($result->num_rows >= 1){
@@ -115,11 +110,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["empsearch"])) {
         echo "</table>";
     }
     else{
-        //echo "<h2>No results found.</h2>";
     }
 }
          ?>
-
 
 <h1>Return</h1>
     <form action='search.php' method="POST">
@@ -129,11 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["empsearch"])) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return"])) {
         header("Location: home.php");
         exit;
-    // Retrieve the input data to display
-
     }
-
-
          ?>
 </body>
 </html>

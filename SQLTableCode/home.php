@@ -20,16 +20,13 @@ if ($mysqli->connect_errno) {
 <h1>Train Database</h1>
 
 <?php
-    // Start the session
+    // User Login and Check if they are logged in
     session_start();
-
-    // Check if the user is logged in
     if (!isset($_SESSION['username'])) {
-        // Redirect the user to the login page
         header("Location: index.php");
         exit;
     }
-    echo "Session username: " . $_SESSION['username'] . "<br><br>";
+    echo "<h3>Session username: " . $_SESSION['username'] . "</h3>   ";
 ?>
 <form action='home.php' method="POST">
         <input type='submit' name= 'return0' id="return0" value="logout" required/> 
@@ -39,9 +36,8 @@ if ($mysqli->connect_errno) {
         session_abort();
         header("Location: index.php");
         exit;
-    // Retrieve the input data to display
-
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,8 +56,6 @@ if ($mysqli->connect_errno) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return"])) {
         header("Location: search.php");
         exit;
-    // Retrieve the input data to display
-
 }
 
 ?>
@@ -74,8 +68,6 @@ if ($mysqli->connect_errno) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return2"])) {
         header("Location: add.php");
         exit;
-    // Retrieve the input data to display
-
 }
 ?>
 
@@ -87,8 +79,6 @@ if ($mysqli->connect_errno) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return3"])) {
         header("Location: update.php");
         exit;
-    // Retrieve the input data to display
-
 }
 ?>
 <h2>Delete Entry</h2>
@@ -99,8 +89,6 @@ if ($mysqli->connect_errno) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return4"])) {
         header("Location: delete.php");
         exit;
-    // Retrieve the input data to display
-
 }
 
 ?>
@@ -112,36 +100,30 @@ if ($mysqli->connect_errno) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return13"])) {
         header("Location: searchclient.php");
         exit;
-    // Retrieve the input data to display
 }
 ?>
 
 <?php
-    // Check for CEO Existence before printing Generate Report, if not don't show option
+    // Check for Supervisor
     $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND (UserType = 'CEO' OR UserType = 'Supervisor')");
-    // If this is true, Return the CEO Result
     if($result->num_rows >= 1){
 ?>
     <h2>View Employee Information</h2>
     <form action='home.php' method="POST">
         <input type='submit' name= 'return12' id="return12" required/> <br> <br>
     </form>
-
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return12"])) {
         header("Location: searchemp.php");
         exit;
-    // Retrieve the input data to display
 }
 ?>
 <?php
-    } else {
     }
 ?>
 
 <?php
-    // Check for CEO Existence before printing Generate Report, if not don't show option
+    // Check for Train Engineer
     $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'TrainEngineer'");
-    // If this is true, Return the CEO Result
     if($result->num_rows >= 1){
 ?>
     <h2>View Train Information</h2>
@@ -152,7 +134,6 @@ if ($mysqli->connect_errno) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return14"])) {
         header("Location: searchtrain.php");
         exit;
-    // Retrieve the input data to display
 }
 ?>
 <?php
@@ -160,9 +141,8 @@ if ($mysqli->connect_errno) {
 ?>
 
 <?php
-    // Check for CEO Existence before printing Generate Report, if not don't show option
+    // Check for CEO
     $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'CEO'");
-    // If this is true, Return the CEO Result
     if($result->num_rows >= 1){
 ?>
     <h2>Generate Financial Report</h2>
@@ -173,18 +153,15 @@ if ($mysqli->connect_errno) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return5"])) {
         header("Location: generatereportfin.php");
         exit;
-    // Retrieve the input data to display
 }
 ?>
 <?php
-    } else {
     }
 ?>
 
 <?php
-    // Check for CEO Existence before printing Generate Report, if not don't show option
+    // Check for Safety Inspector
     $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'SafetyInspector'");
-    // If this is true, Return the CEO Result
     if($result->num_rows >= 1){
 ?>
     <h2>Generate Inspection Report</h2>
@@ -195,18 +172,15 @@ if ($mysqli->connect_errno) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return6"])) {
         header("Location: generatereportinsp.php");
         exit;
-    // Retrieve the input data to display
 }
 ?>
 <?php
-    } else {
     }
 ?>
 
 <?php
-    // Check for CEO Existence before printing Generate Report, if not don't show option
+    // Check for Train Engineer
     $result = mysqli_query($mysqli, "SELECT UserType FROM users WHERE email = '{$_SESSION['email']}' AND UserType = 'TrainEngineer'");
-    // If this is true, Return the CEO Result
     if($result->num_rows >= 1){
 ?>
     <h2>Generate Repair/Service Report</h2>

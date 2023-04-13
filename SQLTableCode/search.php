@@ -23,23 +23,21 @@ if ($mysqli->connect_errno) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Form</title>
+    <title>Train Database</title>
 </head>
 
 <body bgcolor="FBB917">
 <?php
-// Retrieve the list of table names
 $tablesResult = mysqli_query($mysqli, "SHOW TABLES");
 $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 
 ?>
     <h1>Search</h1>
     <form action='search.php' method="POST">
-        <label for="table">Select a table:</label>
+        <label for="table"><b>Select a table:</b></label>
         <select name="table" id="table" required>
         <?php
             session_start();
-            // Retrieve the list of tables from the database
             $result = mysqli_query($mysqli, "SHOW TABLES");
             while ($row = mysqli_fetch_row($result)) {
                 $table_name = $row[0];
@@ -54,7 +52,6 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
                     $table_name == "locomotives" || $table_name == "parts" || $table_name == "repairservice" ||
                     $table_name == "safetyinspector" || $table_name == "train" || $table_name == "transitcars" ||
                     $table_name == "users") {
-                    // Skip the excluded table names
                     continue;
                 }
                 }
@@ -64,7 +61,6 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
                 if ($table_name == "ceo" || $table_name == "employee" || $table_name == "freightcarworker" ||
                     $table_name == "locomotiveworker" || $table_name == "safetyinspector" || $table_name == "trainengineer" ||
                     $table_name == "transitworker" || $table_name == "users") {
-                    // Skip the excluded table names
                     continue;
                 }
                 }
@@ -76,7 +72,6 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
                     $table_name == "locomotiveworker" || $table_name == "parts" || $table_name == "repairservice" || 
                     $table_name == "safetyinspector" || $table_name == "trainengineer" || $table_name == "transitcars" || 
                     $table_name == "transitworker" || $table_name == "users") {
-                    // Skip the excluded table names
                     continue;
                 }
                 }
@@ -88,12 +83,9 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
                     $table_name == "locomotiveworker" || $table_name == "parts" || $table_name == "repairservice" || 
                     $table_name == "safetyinspector" || $table_name == "train" || $table_name == "trainengineer" || 
                     $table_name == "transitcars" || $table_name == "transitworker" || $table_name == "users") {
-                    // Skip the excluded table names
                     continue;
                 }
                 }
-                // Check if the current table is "users" and skip it if it is
-                // Output each table as an option in the dropdown menu
                 echo "<option value='$table_name'>$table_name</option>";
             }
             session_abort();
@@ -105,14 +97,12 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 
     <?php 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tableSelect"])) {
-        // Retrieve the input data to display
         session_start();
-        $_SESSION['POST'] = $_POST["table"]; // store post variable which is table in the session
+        $_SESSION['POST'] = $_POST["table"];
         header("Location: select_pk.php");
         exit;
     }
     ?>
-
     <h1>Return</h1>
     <form action='search.php' method="POST">
         <input type='submit' name= 'return' id="return" required/> <br> <br>
