@@ -84,11 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
     // Check if there are any rows returned by the query
     if (mysqli_num_rows($result) > 0) {
         // Display the table headers
-        echo "<table><tr><th>Part Number</th><th>Supplier Name</th><th>Train ID</th><th>Repair ID</th><th>EngineerSSN</th><th</tr>";
+        echo "<table><tr><th>Part Number</th><th>Part Name</th><th>Supplier Name</th><th>Train ID</th><th>Repair ID</th><th>EngineerSSN</th><th</tr>";
 
         // Output the table rows
         while($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row["PartNumber"] . "</td><td>" . $row["SupplierName"] . "</td><td>" . $row["TrainID"] . "</td><td>" . $row["RepairID"] . "</td><td>" . $row["ESSN"] . "</td></tr>";
+            echo "<tr><td>" . $row["PartNumber"] . "</td><td>" . $row["PartName"] . "</td><td>" . $row["SupplierName"] . "</td><td>" . $row["TrainID"] . "</td><td>" . $row["RepairID"] . "</td><td>" . $row["ESSN"] . "</td></tr>";
         }
 
         // Close the table

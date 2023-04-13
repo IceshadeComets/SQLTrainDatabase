@@ -22,7 +22,7 @@ if ($mysqli->connect_errno) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
+    <title>Train Database</title>
 </head>
 
 <body bgcolor="FBB917">
@@ -34,7 +34,7 @@ $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 
 <h1>View Client Information</h1> 
 <form action='searchclient.php' method="POST">
-    <label for="name">Select Employee</label><br>
+    <label for="name">Select Client</label><br>
     <select name="name" id="name">
         <?php
 

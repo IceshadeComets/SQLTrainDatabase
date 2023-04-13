@@ -16,45 +16,10 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-// If the login form has been submitted, process the input data
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
-
-    // Retrieve the input data from the login form
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-
-    // Check if the email exists in the database
-    $stmt = $mysqli->prepare("SELECT username, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-
-    // If a matching row is found, verify the password and set the session variable and redirect the user to the home page
-    if ($stmt->num_rows == 1) {
-        $stmt->bind_result($username, $hashed_password);
-        $stmt->fetch();
-        if (password_verify($password, $hashed_password)) {
-            $_SESSION['username'] = $username; // set session variable
-            $_SESSION['email'] = $email;
-            header("Location: home.php");
-            exit;
-        } else {
-            echo "Invalid email or password";
-        }
-    } else {
-        echo "Invalid email or password";
-    }
-
-    // Close the database connection
-    $stmt->close();
-    $mysqli->close();
-}
-
-// If the create account form has been submitted, process the input data
+// Create Account
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
 
-    // Retrieve the input data from the create account form
-    // Retrieve the input data from the create account form
+    // Retrieve Input Data
     $name = $_POST["name"];
     $email = $_POST["email"];
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT); // Hash the password
@@ -66,89 +31,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
     // 555 Supervisor
     // Else Employee
 
+    // CEO Code
     if($adminc == 69){
-    // Insert the input data into the database table
     $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
-    $user_type = "CEO"; // Define the user type variable
-    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $user_type = "CEO";
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type);
     $stmt->execute();
-
-    // Check for insertion errors
     if ($stmt->errno) {
         echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
     } else {
         echo "Account created successfully!";
     }
-
-    // Close the database connection
     $stmt->close();
     $mysqli->close();
+    // Train Engineer Code
     } else if($adminc == 420){
-    // Insert the input data into the database table
     $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
-    $user_type = "TrainEngineer"; // Define the user type variable
-    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $user_type = "TrainEngineer"; 
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type); 
     $stmt->execute();
-
-    // Check for insertion errors
     if ($stmt->errno) {
         echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
     } else {
         echo "Account created successfully!";
     }
-
-    // Close the database connection
     $stmt->close();
     $mysqli->close();
+    // Safety Inspector Code
     } else if($adminc == 500){
-    // Insert the input data into the database table
     $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
-    $user_type = "SafetyInspector"; // Define the user type variable
-    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $user_type = "SafetyInspector";
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type);
     $stmt->execute();
-
-    // Check for insertion errors
     if ($stmt->errno) {
         echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
     } else {
         echo "Account created successfully!";
     }
-
-    // Close the database connection
     $stmt->close();
     $mysqli->close();   
+    // Supervisor Code
     } else if($adminc == 555){
-    // Insert the input data into the database table
     $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
-    $user_type = "Supervisor"; // Define the user type variable
-    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $user_type = "Supervisor";
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type);
     $stmt->execute();
-
-    // Check for insertion errors
     if ($stmt->errno) {
         echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
     } else {
         echo "Account created successfully!";
     }
-
-    // Close the database connection
     $stmt->close();
     $mysqli->close();
+    // General Employee, Else
     } else {
-    // Insert the input data into the database table
     $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, UserType) VALUES (?, ?, ?, ?)");
-    $user_type = "Employee"; // Define the user type variable
-    $stmt->bind_param("ssss", $name, $email, $password, $user_type); // Bind the user type variable to the prepared statement
+    $user_type = "Employee";
+    $stmt->bind_param("ssss", $name, $email, $password, $user_type);
     $stmt->execute();
-
-    // Check for insertion errors
     if ($stmt->errno) {
         echo "Failed to create account: (" . $stmt->errno . ") " . $stmt->error;
     } else {
         echo "Account created successfully!";
     }
-
-    // Close the database connection
     $stmt->close();
     $mysqli->close();
     }
@@ -194,9 +139,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["return"])) {
         header("Location: index.php");
         exit;
-    // Retrieve the input data to display
-
     }
-
-
          ?>

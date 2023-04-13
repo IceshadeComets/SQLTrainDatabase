@@ -18,20 +18,20 @@ if ($mysqli->connect_errno) {
 
     session_start();
 
-// If the login form has been submitted, process the input data
+// Login
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
 
-    // Retrieve the input data from the login form
+    // Input Data
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    // Check if the email exists in the database
+    // Check if Email Exists
     $stmt = $mysqli->prepare("SELECT username, password FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
-    // If a matching row is found, verify the password and set the session variable and redirect the user to the home page
+    // If Matching Row, then send to Home
     if ($stmt->num_rows == 1) {
         $stmt->bind_result($username, $hashed_password);
         $stmt->fetch();
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     $mysqli->close();
 }
 
-// If the create account form has been submitted, process the input data
+// Send to Create Form
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
     header("Location: connect.php");
     exit;
@@ -74,8 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
 <body>
 
     <h1>User Login</h1>
-
-    <!-- Login form -->
     <h2>Login</h2>
     <form method="POST" action="">
         <label>Email:</label><br>
@@ -86,8 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["create"])) {
 
         <input type="submit" name="login" value="Login">
     </form>
-
-    <!-- Create account form -->
     <h2>Create Account</h2>
     <form method="POST" action="">
         <input type="submit" name="create" value="Create Account">

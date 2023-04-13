@@ -16,11 +16,11 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-// Retrieve the selected table name from the session
+// Selected Table Name from Sesssion
 session_start();
-$table = $_SESSION['POST']; // store post variable which is table
+$table = $_SESSION['POST'];
 
-// Retrieve the primary key column name for the selected table
+// Retreive Primary Key Column
 $result = mysqli_query($mysqli, "SHOW KEYS FROM $table WHERE Key_name = 'PRIMARY'");
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
@@ -44,10 +44,10 @@ if ($result->num_rows > 0) {
     <h1>Delete primary key</h1>
 
     <form action='delete_pk.php' method="POST">
-        <label for="primaryKeyValue">Select a primary key value:</label>
+        <b><label for="primaryKeyValue">Select a primary key value:</label></b>
         <select name="primaryKeyValue" id="primaryKeyValue" required>
             <?php
-            // Fetch primary key values from the selected table
+            // Fetch Primary Key Values
             $result = $mysqli->query("SELECT $primaryKeyColumn FROM $table");
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -70,7 +70,6 @@ if ($result->num_rows > 0) {
         if ($xKey) {
             $primaryKey = mysqli_fetch_assoc($xKey);
             $primaryKeyColumn = $primaryKey['COLUMN_NAME'];
-            echo "The primary key column for $table is: $primaryKeyColumn";
             $result = mysqli_query($mysqli,"DELETE FROM $table WHERE $table.$primaryKeyColumn = '$primaryKeyValue'");
             if(mysqli_affected_rows($mysqli) > 0){
                 echo "<h2>Row deleted successfully.</h2>";
@@ -80,7 +79,6 @@ if ($result->num_rows > 0) {
         }
     }
     ?>
-
     <h1>Return</h1>
     <form action='delete.php' method="POST">
         <input type='submit' name='returndelete' id="returndelete" required/> <br> <br>

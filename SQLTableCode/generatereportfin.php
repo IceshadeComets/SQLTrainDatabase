@@ -27,87 +27,58 @@ if ($mysqli->connect_errno) {
 
 <body bgcolor="FBB917">
 <?php
-// Retrieve the list of table names
+// List of Table Names
 $tablesResult = mysqli_query($mysqli, "SHOW TABLES");
 $tables = mysqli_fetch_all($tablesResult, MYSQLI_ASSOC);
 ?>
 
-<h1>Generate Report</h1>
+<h1>Generate Financial Report</h1>
 <form action='generatereportfin.php' method="POST">
-    <label>Generate Financial Report</label>
-    <br></br>
-    <label>Enter Report ID</label>
-    <input type='text' name= 'reportid' id="reportid" required/> <br> <br>
-    <input type='submit' name= 'freport' id="freport" required/> <br> <br>
+    <input type='submit' name= 'freport' id="freport" value="Generate Report" required/> <br> <br>
 </form>
 
 <?php 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["freport"])) {
 
     // Display Table of Trains
-    echo "List of Trains";
-
-
+    echo "<h2>List of Trains</h2>";
     $sqltraubs = "SELECT * FROM Train";
     $result = mysqli_query($mysqli, $sqltraubs);
-
-    // Check if there are any rows returned by the query
     if (mysqli_num_rows($result) > 0) {
-    echo "<table><tr><th>TrainID</th><th>InspectorSSN</th><th>BranchID</th><th>LocomotiveType</th><th>last_inspected</th><th>inspection_status</th><th>cost</th></tr>";
-    while($row = mysqli_fetch_assoc($result)) {
-        echo "<tr><td>" . $row["TrainID"] . "</td><td>" . $row["InspectorSSN"] . "</td><td>" . $row["BranchID"] . "</td><td>" . $row["LocomotiveType"] . "</td><td>" . $row["last_inspected"] . "</td><td>" . $row["inspection_status"] . "</td><td>" . $row["cost"] . "</td></tr>";
-    }
-    // Close the table
-    echo "</table>";
-    } else {
-        // If no rows returned, display a message
-        echo "No results found.";
-    }
-
-    echo "List of Parts";
-    // Prepare the SQL query to retrieve all columns and rows from "parts" table
-    $sqlparts = "SELECT * FROM parts";
-
-    // Execute the SQL query and store the result in a variable
-    $result = mysqli_query($mysqli, $sqlparts);
-
-    // Check if there are any rows returned by the query
-    if (mysqli_num_rows($result) > 0) {
-        // Display the table headers
-        echo "<table><tr><th>Part Number</th><th>Supplier Name</th><th>Train ID</th><th>Cost</th></tr>";
-
-        // Output the table rows
+        echo "<table border='4'><tr><th>TrainID</th><th>InspectorSSN</th><th>BranchID</th><th>LocomotiveType</th><th>last_inspected</th><th>inspection_status</th><th>cost</th></tr>";
         while($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>" . $row["PartNumber"] . "</td><td>" . $row["SupplierName"] . "</td><td>" . $row["TrainID"] . "</td><td>" . $row["Cost"] . "</td></tr>";
+            echo "<tr><td>" . $row["TrainID"] . "</td><td>" . $row["InspectorSSN"] . "</td><td>" . $row["BranchID"] . "</td><td>" . $row["LocomotiveType"] . "</td><td>" . $row["last_inspected"] . "</td><td>" . $row["inspection_status"] . "</td><td>" . $row["cost"] . "</td></tr>";
         }
-
-        // Close the table
         echo "</table>";
     } else {
-        // If no rows returned, display a message
         echo "No results found.";
     }
-
-    echo "List of Repair/Service Orders";
-    // Prepare the SQL query to retrieve all columns and rows from "parts" table
-    $sqlrepair = "SELECT * FROM repairservice";
-    // Execute the SQL query and store the result in a variable
-    $result = mysqli_query($mysqli, $sqlrepair);
-
-    // Check if there are any rows returned by the query
+    
+    // Display Table of Parts
+    echo "<h2>List of Parts</h2>";
+    $sqlparts = "SELECT * FROM parts";
+    $result = mysqli_query($mysqli, $sqlparts);
     if (mysqli_num_rows($result) > 0) {
-        // Display the table headers
-        echo "<table><tr><th>RepairID</th><th>ESSN</th><th>TrainID</th><th>Cost</th></tr>";
-
-        // Output the table rows
+        echo "<table border='4'><tr><th>Part Number</th><th>Part Name</th><th>Supplier Name</th><th>Train ID</th><th>Cost</th></tr>";
+        while($row = mysqli_fetch_assoc($result)) {
+            echo "<tr><td>" . $row["PartNumber"] . "</td><td>" . $row["PartName"] . "</td><td>" . $row["SupplierName"] . "</td><td>" . $row["TrainID"] . "</td><td>" . $row["Cost"] . "</td></tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "No results found.";
+    }
+    
+    // Display List of Repair/Service
+    echo "<h2>List of Repair/Service Orders</h2>";
+    $sqlrepair = "SELECT * FROM repairservice";
+    $result = mysqli_query($mysqli, $sqlrepair);
+    if (mysqli_num_rows($result) > 0) {
+        echo "<table border='4'><tr><th>RepairID</th><th>ESSN</th><th>TrainID</th><th>Cost</th></tr>";
         while($row = mysqli_fetch_assoc($result)) {
             echo "<tr><td>" . $row["RepairID"] . "</td><td>" . $row["ESSN"] . "</td><td>" . $row["TrainID"] . "</td><td>" . $row["Cost"] . "</td></tr>";
         }
-
-        // Close the table
         echo "</table>";
     } else {
-        // If no rows returned, display a message
         echo "No results found.";
     }
 

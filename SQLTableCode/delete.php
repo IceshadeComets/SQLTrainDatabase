@@ -28,11 +28,11 @@ if ($mysqli->connect_errno) {
 <body bgcolor="FBB917">
 <h1>Delete Table</h1>
     <form action='delete.php' method="POST">
-        <label for="table">Select a table to delete:</label>
+        <b><label for="table">Select a table to delete:</label></b>
         <select name="table" id="table" required>
             <?php
             session_start();
-            // Retrieve the list of tables from the database
+            // Get list of tables
             $result = mysqli_query($mysqli, "SHOW TABLES");
             while ($row = mysqli_fetch_row($result)) {
                 $table_name = $row[0];
@@ -47,7 +47,6 @@ if ($mysqli->connect_errno) {
                     $table_name == "locomotives" || $table_name == "parts" || $table_name == "repairservice" ||
                     $table_name == "safetyinspector" || $table_name == "train" || $table_name == "transitcars" ||
                     $table_name == "users") {
-                    // Skip the excluded table names
                     continue;
                 }
                 }
@@ -57,7 +56,6 @@ if ($mysqli->connect_errno) {
                 if ($table_name == "ceo" || $table_name == "employee" || $table_name == "freightcarworker" ||
                     $table_name == "locomotiveworker" || $table_name == "safetyinspector" || $table_name == "trainengineer" ||
                     $table_name == "transitworker" || $table_name == "users") {
-                    // Skip the excluded table names
                     continue;
                 }
                 }
@@ -69,7 +67,6 @@ if ($mysqli->connect_errno) {
                     $table_name == "locomotiveworker" || $table_name == "parts" || $table_name == "repairservice" || 
                     $table_name == "safetyinspector" || $table_name == "trainengineer" || $table_name == "transitcars" || 
                     $table_name == "transitworker" || $table_name == "users") {
-                    // Skip the excluded table names
                     continue;
                 }
                 }
@@ -81,15 +78,9 @@ if ($mysqli->connect_errno) {
                     $table_name == "locomotiveworker" || $table_name == "parts" || $table_name == "repairservice" || 
                     $table_name == "safetyinspector" || $table_name == "train" || $table_name == "trainengineer" || 
                     $table_name == "transitcars" || $table_name == "transitworker" || $table_name == "users") {
-                    // Skip the excluded table names
                     continue;
                 }
                 }
-
-
-
-                // Check if the current table is "users" and skip it if it is
-                // Output each table as an option in the dropdown menu
                 echo "<option value='$table_name'>$table_name</option>";
             }
             session_abort();
@@ -106,9 +97,8 @@ if ($mysqli->connect_errno) {
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["clientdelete"])) {
-    // Retrieve the input data to display
     session_start();
-    $_SESSION['POST'] = $_POST["table"]; // store post variable which is table in the session
+    $_SESSION['POST'] = $_POST["table"];
     header("Location: delete_pk.php");
     exit;
 }
